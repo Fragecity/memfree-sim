@@ -6,3 +6,4 @@ build/
 *.egg-info/
 benchmarks/results/*.csv
 benchmarks/results/*.json
+AGENT.md
