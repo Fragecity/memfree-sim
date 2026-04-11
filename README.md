@@ -18,6 +18,8 @@ The intended runtime is `WSL2 Ubuntu` or native Linux with CUDA. This repository
 - PyTorch with CUDA
 - Triton on Linux
 
+`triton` is a required import-time dependency for `memfree_sim`; environments without Triton are not supported for package import.
+
 This project is managed with `uv`. The repository pins the local interpreter via [`.python-version`](C:/Users/15246/Projects/memfree-sim/.python-version) and uses the `dev` dependency group by default.
 
 Recommended setup inside WSL:
