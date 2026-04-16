@@ -1,14 +1,12 @@
 from __future__ import annotations
 
 import pytest
-
-torch = pytest.importorskip("torch")
-pytest.importorskip("triton")
-
-if not torch.cuda.is_available():
-    pytest.skip("CUDA is required for Triton FK tests.", allow_module_level=True)
+import torch
 
 from memfree_sim import ArmSpec, fk_reference, fused_fk
+
+
+assert torch.cuda.is_available(), "CUDA is required in the server test environment."
 
 
 @pytest.mark.parametrize("batch_size", [32, 2048])
@@ -37,4 +35,3 @@ def test_fused_fk_matches_reference_backward(batch_size: int) -> None:
     loss_fused.backward()
 
     torch.testing.assert_close(q_fused.grad, q_ref.grad, rtol=1e-4, atol=1e-5)
-

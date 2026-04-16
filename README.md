@@ -12,28 +12,27 @@ The repository contains:
 
 ## Environment
 
-The intended runtime is `WSL2 Ubuntu` or native Linux with CUDA. This repository is designed around:
+The intended runtime is a Linux server with CUDA. This repository is designed around:
 
 - Python `3.11` or `3.12`
 - PyTorch with CUDA
 - Triton on Linux
 
-`triton` is a required import-time dependency for `memfree_sim`; environments without Triton are not supported for package import.
+`triton` is a required import-time dependency for `memfree_sim`; CPU-only or non-Linux environments are not supported.
 
 This project is managed with `uv`. The repository pins the local interpreter via [`.python-version`](C:/Users/15246/Projects/memfree-sim/.python-version) and uses the `dev` dependency group by default.
 
-Recommended setup inside WSL:
+Recommended server setup:
 
 ```bash
 uv sync
 ```
 
-Do not install a separate Linux NVIDIA driver inside WSL; use the Windows host driver CUDA mapping.
-
 Useful commands:
 
 ```bash
 uv run pytest -q
+uv run python -m benchmarks.fk_parity --batch-size 16384
 uv run python -m benchmarks.fk_bench --batch-sizes 4096 8192 16384 32768
 ```
 

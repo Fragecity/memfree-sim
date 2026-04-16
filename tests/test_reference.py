@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import pytest
-
-torch = pytest.importorskip("torch")
+import torch
 
 from memfree_sim.arm_spec import ArmSpec
 from memfree_sim.kinematics import build_local_transforms, fk_reference, joint_transform
@@ -67,4 +65,3 @@ def test_fk_reference_returns_consistent_intermediates() -> None:
         atol=1e-6,
     )
     torch.testing.assert_close(pose, expected_globals[-1], rtol=1e-6, atol=1e-6)
-

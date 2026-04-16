@@ -1,10 +1,8 @@
 from __future__ import annotations
 
-import pytest
+import torch
 
-torch = pytest.importorskip("torch")
-
-from memfree_sim import ArmSpec, fk_reference
+from memfree_sim import ArmSpec, fk_reference, fused_fk
 
 
 def test_reference_handles_batch_size_one_and_zero_angles() -> None:
@@ -31,20 +29,8 @@ def test_reference_handles_joint_limit_boundary_values() -> None:
     assert pose.shape == (2, 4, 4)
     assert torch.isfinite(pose).all()
 
-
-try:
-    import triton  # noqa: F401
-
-    HAS_TRITON = True
-except ImportError:
-    HAS_TRITON = False
-
-from memfree_sim import fused_fk
-
-
-@pytest.mark.skipif(not HAS_TRITON, reason="Triton is not installed.")
-@pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is required for Triton edge-case tests.")
 def test_fused_fk_accepts_non_contiguous_input() -> None:
+    assert torch.cuda.is_available(), "CUDA is required in the server test environment."
     spec = ArmSpec.default(device="cuda", dtype=torch.float32)
     q_base = torch.randn(64, 14, device="cuda", dtype=torch.float32)
     q = q_base[:, ::2]
